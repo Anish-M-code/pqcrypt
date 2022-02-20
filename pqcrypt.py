@@ -63,7 +63,7 @@ def fingerprint():
         content = cursor.execute('select key from map').fetchall()
         x = hashlib.sha512(content[0][0]).hexdigest()
         print('\n --- Fingerprint --- \n')
-        print(x[:len(x)//2],'\n',x[len(x)//2:])
+        print(' ',x[:len(x)//2],'\n ',x[len(x)//2:])
         connect.commit()
         cursor.close()
         connect.close()
@@ -397,14 +397,14 @@ def sign_verify():
                             is_valid = verifier.verify(bytes(hash,'utf-8'), sig, public_key)
                             if is_valid == True:
                                 print('Good Signature , Data signed on',hash.split('%')[2])
-                                print('Digital Signature made using key with fingerprint:-\n')
-                                x = hash.split()[0]
-                                print(x[:len(x)//2],'\n',x[len(x)//2:])
+                                print('\nDigital Signature made using key with fingerprint:-\n')
+                                x = hash.split('%')[0]
+                                print(' ',x[:len(x)//2],'\n ',x[len(x)//2:])
                             else:
                                 print('Bad Signature!')
-                                print('Digital Signature made using key with fingerprint:-\n')
-                                x = hash.split()[0]
-                                print(x[:len(x)//2],'\n',x[len(x)//2:])
+                                print('\nDigital Signature made using key with fingerprint:-\n')
+                                x = hash.split('%')[0]
+                                print(' ',x[:len(x)//2],'\n ',x[len(x)//2:])
 
                         connect.commit()
                         cursor.close()
@@ -553,6 +553,7 @@ For Feature Requests and for reporting Bugs contact
 me on https://github.com/anish-m-code 
     
           ''')
+    sleep(5)
 
 def main_menu():
 
