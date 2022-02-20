@@ -115,9 +115,10 @@ def encrypt_decrypt():
                         algo varchar(25),
                         iv   BLOB ,
                         salt BLOB ,
+                        publickey BLOB ,
                         key BLOB not null 
                         )''')
-            cursor.execute('insert into map values (?,?,?,?)',(kemalg,iv,salt,ciphertext))
+            cursor.execute('insert into map values (?,?,?,?,?)',(kemalg,iv,salt,public_key,ciphertext))
             connect.commit()
             cursor.close()
             connect.close()
@@ -201,7 +202,7 @@ def encrypt_decrypt():
             kemalg = content[0][0]
             iv = content[0][1]
             salt = content[0][2]
-            ctxt1 = content[0][3]
+            ctxt1 = content[0][4]
             password = getpass.getpass('Enter Password to unlock secret key:')
             password = bytes(password,'utf-8')
             key = argon2.low_level.hash_secret_raw(password, salt, 12, 2097152, 4, 32, argon2.low_level.Type.ID, 19)
@@ -341,9 +342,10 @@ def sign_verify():
                         algo varchar(25),
                         iv   BLOB ,
                         salt BLOB ,
+                        publickey BLOB ,
                         key BLOB not null 
                         )''')
-            cursor.execute('insert into map values (?,?,?,?)',(sigalg,iv,salt,ciphertext))
+            cursor.execute('insert into map values (?,?,?,?,?)',(sigalg,iv,salt,public_key,ciphertext))
             connect.commit()
             cursor.close()
             connect.close()
@@ -354,7 +356,8 @@ def sign_verify():
         start()
         public_key = ''
         publickey = input('Enter Public key:')
-        file = input('\nEnter file:')
+        file = input('\nEnter filename:')
+        sigfile = input('\nEnter Digital Signature File Location:')
         limit = 1024
         v = hashlib.sha512()
         with open(file,'rb+') as f:
@@ -385,17 +388,24 @@ def sign_verify():
                 with oqs.Signature(sigalg) as server:
 
                     try:
-                        connect = sqlite3.connect(file+".qsig")
+                        connect = sqlite3.connect(sigfile)
                         cursor = connect.cursor()
                         content = cursor.execute('select * from map').fetchall() 
                         hash = content[0][0]
                         sig = content[0][1]
-                        if hash_initial == hash.split('%')[0]:
+                        if hash_initial == hash.split('%')[1]:
                             is_valid = verifier.verify(bytes(hash,'utf-8'), sig, public_key)
                             if is_valid == True:
-                                print('Good Signature , Data signed on',hash.split('%')[1])
+                                print('Good Signature , Data signed on',hash.split('%')[2])
+                                print('Digital Signature made using key with fingerprint:-\n')
+                                x = hash.split()[0]
+                                print(x[:len(x)//2],'\n',x[len(x)//2:])
                             else:
                                 print('Bad Signature!')
+                                print('Digital Signature made using key with fingerprint:-\n')
+                                x = hash.split()[0]
+                                print(x[:len(x)//2],'\n',x[len(x)//2:])
+
                         connect.commit()
                         cursor.close()
                         connect.close()
@@ -433,7 +443,8 @@ def sign_verify():
             sigalg = content[0][0]
             iv = content[0][1]
             salt = content[0][2]
-            ctxt1 = content[0][3]
+            public_key = content[0][3]
+            ctxt1 = content[0][4]
             password = getpass.getpass('Enter Password to unlock secret key:')
             password = bytes(password,'utf-8')
             key = argon2.low_level.hash_secret_raw(password, salt, 12, 2097152, 4, 32, argon2.low_level.Type.ID, 19)
@@ -455,7 +466,8 @@ def sign_verify():
                 while len(buff)>0:
                     buff = f.read(limit)
                     v.update(buff)
-            d = str(v.hexdigest()) + '%'
+            d = str(hashlib.sha512(public_key).hexdigest()) + '%'
+            d += str(v.hexdigest()) + '%'
             d += str(datetime.datetime.today())
             sign1 = client.sign(d.encode())
             connect = sqlite3.connect(file+'.qsig')
