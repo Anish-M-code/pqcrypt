@@ -139,6 +139,8 @@ def encrypt_decrypt():
                 if len(content) != 1:
                    print('File Corrupted!')
                    return
+                cursor.close()
+                connect.close()
                 public_key = content[0][1]
                 kemalg = content[0][0]
                 if kemalg not in supported_algos_encrypt:
@@ -183,7 +185,7 @@ def encrypt_decrypt():
     
     # Decryption Function
     def decrypt():
-
+        
         start()
         secret_key = ''
         secretkey = input('Enter Private key:')
@@ -199,6 +201,8 @@ def encrypt_decrypt():
             if len(content) != 1:
                 print('File Corrupted!')
                 return
+            cursor.close()
+            connect.close()
             kemalg = content[0][0]
             iv = content[0][1]
             salt = content[0][2]
@@ -212,8 +216,6 @@ def encrypt_decrypt():
 
             # Restore Session.
             client = oqs.KeyEncapsulation(kemalg, secret_key)
-            cursor.close()
-            connect.close()
             
             # unlock payload
             connect = sqlite3.connect(file)
@@ -222,6 +224,8 @@ def encrypt_decrypt():
             if len(content) != 1:
                 print('File Corrupted!')
                 return
+            cursor.close()
+            connect.close()
             iv = content[0][0]
             ctxt = content[0][1]
             ciphertext = content[0][2]
@@ -306,6 +310,42 @@ def encrypt_decrypt():
 
     menu()
 
+# Function to extract public key material from private key.
+def extract_public_key():
+        start()
+        secretkey = input('Enter Private key:')
+        if os.path.exists(secretkey) == False:
+            print('File Not Found')
+            return
+
+        try:
+            connect = sqlite3.connect(secretkey)
+            cursor = connect.cursor()
+            content = cursor.execute('select * from map').fetchall()
+            if len(content) != 1:
+                print('File Corrupted!')
+                return
+            cursor.close()
+            connect.close()
+            kemalg = content[0][0]
+            public_key = content[0][3]
+
+            connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".pub")
+            cursor = connect.cursor()
+            cursor.execute('''create table map ( 
+                        algo  varchar(25) not null,
+                        key BLOB 
+                        )''')
+            cursor.execute('insert into map values (?,?)',(kemalg,public_key))
+            connect.commit()
+            cursor.close()
+            connect.close()
+        except Exception as e:
+            print(e)
+            fail()
+            return
+        complete()
+
 def sign_verify():
     sigs = oqs.get_enabled_sig_mechanisms()
 
@@ -372,6 +412,8 @@ def sign_verify():
                 connect = sqlite3.connect(publickey)
                 cursor = connect.cursor()
                 content = cursor.execute('select * from map').fetchall()
+                cursor.close()
+                connect.close()
                 if len(content) != 1:
                    print('File Corrupted!')
                    fail()
@@ -406,7 +448,6 @@ def sign_verify():
                                 x = hash.split('%')[0]
                                 print(' ',x[:len(x)//2],'\n ',x[len(x)//2:])
 
-                        connect.commit()
                         cursor.close()
                         connect.close()
                         complete()
@@ -435,6 +476,8 @@ def sign_verify():
             connect = sqlite3.connect(secretkey)
             cursor = connect.cursor()
             content = cursor.execute('select * from map').fetchall()
+            cursor.close()
+            connect.close()
             if len(content) != 1:
                 print('File Corrupted!')
                 fail()
@@ -454,8 +497,6 @@ def sign_verify():
 
             # Restore Session.
             client = oqs.Signature(sigalg, secret_key)
-            cursor.close()
-            connect.close()
             
             # create Signature.
             limit = 1024
@@ -562,8 +603,9 @@ def main_menu():
     print(' 1) Encrypt/Decrypt Data')
     print(' 2) Digitally Sign/Verify Data')
     print(' 3) Check Fingerprint of Public key')
-    print(' 4) Update Dependencies')
-    print(' 5) About')
+    print(' 4) Export/Extract Public key from Private key')
+    print(' 5) Update Dependencies')
+    print(' 6) About')
     ch = input('\nEnter choice:')
     if ch == '1':
         encrypt_decrypt()
@@ -575,9 +617,12 @@ def main_menu():
         fingerprint()
         main_menu()
     elif ch == '4':
-        update()
+        extract_public_key()
         main_menu()
     elif ch == '5':
+        update()
+        main_menu()
+    elif ch == '6':
         about()
         main_menu()
     else:
