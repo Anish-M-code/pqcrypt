@@ -58,12 +58,6 @@ Digital Signature Algorithms : -
 
 3) Falcon-1024
 
-4) Rainbow-V-Classic
-
-5) Rainbow-V-Circumzenithal
-
-6) Rainbow-V-Compressed
-
 Features : -
 --------
 

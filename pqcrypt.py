@@ -29,6 +29,8 @@ import hashlib
 import getpass
 import argon2
 import oqs
+import lzma
+import binascii
 from time import sleep
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
     
@@ -36,7 +38,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 supported_algos_encrypt = ('Kyber1024','FireSaber-KEM','NTRU-HPS-4096-1229','NTRU-HRSS-1373','Classic-McEliece-6688128','Classic-McEliece-6688128f','Classic-McEliece-6960119','Classic-McEliece-6960119f','Classic-McEliece-8192128','Classic-McEliece-8192128f')
 
 # Supported Post quantum Digital Signature Algorithms.
-supported_algos_sig = ('Dilithium5','Dilithium5-AES','Falcon-1024','Rainbow-V-Classic','Rainbow-V-Circumzenithal','Rainbow-V-Compressed')
+supported_algos_sig = ('Dilithium5','Dilithium5-AES','Falcon-1024')
 
 def start():
     print('\n<--- Task Started --->\n')
@@ -53,10 +55,85 @@ def check(file):
     if os.path.exists(file):
         os.remove(file)
 
+# Convert binary data to ascii representation.
+def binary2ascii(file,msg,iext,fext):
+    if file.endswith(iext) == False:
+        return
+    
+    filename = file.split('.')[0]
+
+    try:
+        with open(file,'rb') as f:
+            with open(filename+'.mod','wb') as w:
+                buff = f.read()
+                out = lzma.compress(buff)
+                w.write(binascii.b2a_base64(out))
+                
+    except Exception as e:
+        print(e)
+        return
+    
+    with open(filename+fext,'w') as k:
+        k.write('\n--- PQP '+msg+' ---\n')
+        with open(filename+'.mod') as m:
+            buff=m.read()
+            k.write(buff)
+            k.write('\n--- PQP '+msg+' ---\n')
+
+    os.remove(filename+'.mod')
+
+# Convert Ascii Representation of data to Binary Data.
+def ascii2binary(file,msg,iext,fext):
+    if file.endswith(iext) == False:
+        return
+    
+    filename = file.split('.')[0]
+    count = 0
+    try:
+        f = open(filename+'.mod','w')
+        with open(file) as k:
+            buff=k.readline()
+
+            while len(buff) > 0 :
+                buff = k.readline()
+                if msg in buff:
+                    count+=1
+                    if count == 2:
+                        f.close()
+                        break
+                    continue
+                if count == 1:
+                    f.write(buff)
+    except Exception as e:
+        print(e)
+
+    with open(filename+fext,'wb') as w:
+        with open(filename+'.mod','rb') as f:
+                buff = binascii.a2b_base64(f.read())
+                w.write(lzma.decompress(buff))
+    os.rename(filename+'.mod')
+
+def ascii2binary_publickey(key):
+    if key.endswith('.cspub'):
+        ascii2binary(key,'Public Key','.cspub','.spub')
+        return '.spub'
+    if key.endswith('.cpub'):
+        ascii2binary(key,'Public Key','.cpub','.pub')
+        return '.pub'
+
+def binary2ascii_publickey(key):
+    if key.endswith('.spub'):
+        binary2ascii(key,'Public Key','.spub','.cspub')
+    elif key.endswith('.pub'):
+        binary2ascii(key,'Public Key','.pub','.cpub')
+
 def fingerprint():
 
     start()
     file = input(' Enter public key:')
+    if file.split('.')[1] in ('.cspub','.cpub'):
+        file = file.split('.')[0]+ ascii2binary_publickey(file)
+        
     try:
         connect = sqlite3.connect(file)
         cursor = connect.cursor()
@@ -122,6 +199,11 @@ def encrypt_decrypt():
             connect.commit()
             cursor.close()
             connect.close()
+
+            choice = input('Do you need ASCII armoured public key?(Y/N):')
+            if choice.lower() == 'y':
+                binary2ascii_publickey(hashlib.md5(public_key).hexdigest()+'.pub')
+                os.remove(hashlib.md5(public_key).hexdigest()+'.pub')
             complete()
 
     # Encryption Function
@@ -130,6 +212,8 @@ def encrypt_decrypt():
         start()
         public_key = ''
         publickey = input('Enter Public key:')
+        if publickey.split('.')[1] == '.cpub':
+            publickey = publickey.split('.')[0]+ ascii2binary_publickey(file)
         file = input('\nEnter file:')
 
         try:
@@ -137,7 +221,7 @@ def encrypt_decrypt():
                 cursor = connect.cursor()
                 content = cursor.execute('select * from map').fetchall()
                 if len(content) != 1:
-                   print('File Corrupted!')
+                   print('Public Key File Corrupted!')
                    return
                 cursor.close()
                 connect.close()
@@ -177,7 +261,12 @@ def encrypt_decrypt():
                         print(e)
                         fail()
                         return
-
+            
+                choice = input('Do you need ASCII armoured Encrypted Message ?(Y/N):')
+                if choice.lower() == 'y':
+                    binary2ascii(file+'.cry','Encrypted Message','.cry','.ccry')
+                    os.remove(file+'.cry')
+           
         except Exception as e:
             print(e)
             fail()
@@ -193,6 +282,11 @@ def encrypt_decrypt():
         if os.path.exists(file) == False:
             print('File Not Found')
             return
+        
+        if file.endswith('.ccry'):
+            ascii2binary(file,'Encrypted Message','.ccry','.cry')
+            os.remove(file)
+            file = file.replace('.ccry','.cry')
 
         try:
             connect = sqlite3.connect(secretkey)
@@ -313,6 +407,7 @@ def encrypt_decrypt():
 # Function to extract public key material from private key.
 def extract_public_key():
         start()
+        count = 0
         secretkey = input('Enter Private key:')
         if os.path.exists(secretkey) == False:
             print('File Not Found')
@@ -329,8 +424,13 @@ def extract_public_key():
             connect.close()
             kemalg = content[0][0]
             public_key = content[0][3]
-
-            connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".pub")
+            
+            if secretkey.endswith('.sec'):
+                connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".pub")
+                count = 1
+            elif secretkey.endswith('.ssec'):
+                connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".spub")
+                count = 2
             cursor = connect.cursor()
             cursor.execute('''create table map ( 
                         algo  varchar(25) not null,
@@ -344,7 +444,17 @@ def extract_public_key():
             print(e)
             fail()
             return
+
+        choice = input('Do you need ASCII armoured public key?(Y/N):')
+        if choice.lower() == 'y':
+            if count == 1:
+                binary2ascii_publickey(hashlib.md5(public_key).hexdigest()+'.pub')
+                os.remove(hashlib.md5(public_key).hexdigest()+'.pub')
+            elif count == 2:
+                binary2ascii_publickey(hashlib.md5(public_key).hexdigest()+'.spub')
+                os.remove(hashlib.md5(public_key).hexdigest()+'.spub')
         complete()
+        
 
 def sign_verify():
     sigs = oqs.get_enabled_sig_mechanisms()
@@ -389,6 +499,11 @@ def sign_verify():
             connect.commit()
             cursor.close()
             connect.close()
+            
+            choice = input('Do you need ASCII armoured public key?(Y/N):')
+            if choice.lower() == 'y':
+                binary2ascii_publickey(hashlib.md5(public_key).hexdigest()+'.spub')
+                os.remove(hashlib.md5(public_key).hexdigest()+'.spub')
             complete()
 
     # Function to Verify Digital Signature
@@ -396,8 +511,16 @@ def sign_verify():
         start()
         public_key = ''
         publickey = input('Enter Public key:')
+        if publickey.split('.')[1] == '.cspub':
+            publickey = publickey.split('.')[0]+ ascii2binary_publickey(file)
         file = input('\nEnter filename:')
         sigfile = input('\nEnter Digital Signature File Location:')
+
+        if sigfile.endswith('.csig'):
+            ascii2binary(sigfile,'Digital Signature','.csig','.qsig')
+            os.remove(sigfile)
+            sigfile = sigfile.replace('.csig','.qsig')
+            
         limit = 1024
         v = hashlib.sha512()
         with open(file,'rb+') as f:
@@ -521,6 +644,11 @@ def sign_verify():
             connect.commit()
             cursor.close()
             connect.close()
+            
+            choice = input('Do you need ascii armoured digital signature?(Y/n):')
+            if choice.lower() == 'y':
+                binary2ascii(file+'.qsig','Digital Signature','.qsig','.csig')
+                os.remove(file+'.qsig')
             complete()
 
         except FileNotFoundError:
@@ -542,9 +670,6 @@ def sign_verify():
                 print(' 1) Dilithium5')
                 print(' 2) Dilithium5-AES')
                 print(' 3) Falcon-1024')
-                print(' 4) Rainbow-V-Classic')
-                print(' 5) Rainbow-V-Circumzenithal')
-                print(' 6) Rainbow-V-Compressed')
 
                 ch = input('\nEnter choice:')
                 if ch == '1':
@@ -553,17 +678,8 @@ def sign_verify():
                 elif ch == '2':
                     genkeypair('Dilithium5-AES')
                     break
-                elif ch == '3':
+                else: 
                     genkeypair('Falcon-1024')
-                    break
-                elif ch == '4':
-                    genkeypair('Rainbow-V-Classic')
-                    break
-                elif ch == '5':
-                    genkeypair('Rainbow-V-Circumzenithal')
-                    break
-                else:
-                    genkeypair('Rainbow-V-Compressed')
                     break
 
             elif choice == '2':
