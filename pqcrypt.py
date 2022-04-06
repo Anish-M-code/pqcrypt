@@ -78,7 +78,7 @@ def binary2ascii(file,msg,iext,fext):
         with open(filename+'.mod') as m:
             buff=m.read()
             k.write(buff)
-            k.write('\n--- PQP '+msg+' ---\n')
+            k.write('--- PQP '+msg+' ---')
 
     os.remove(filename+'.mod')
 
@@ -92,12 +92,12 @@ def ascii2binary(file,msg,iext,fext):
     try:
         f = open(filename+'.mod','w')
         with open(file) as k:
-            buff=k.readline()
+            buff = k.readline()
 
             while len(buff) > 0 :
                 buff = k.readline()
                 if msg in buff:
-                    count+=1
+                    count += 1
                     if count == 2:
                         f.close()
                         break
@@ -111,7 +111,7 @@ def ascii2binary(file,msg,iext,fext):
         with open(filename+'.mod','rb') as f:
                 buff = binascii.a2b_base64(f.read())
                 w.write(lzma.decompress(buff))
-    os.rename(filename+'.mod')
+    os.remove(filename+'.mod')
 
 def ascii2binary_publickey(key):
     if key.endswith('.cspub'):
@@ -131,7 +131,7 @@ def fingerprint():
 
     start()
     file = input(' Enter public key:')
-    if file.split('.')[1] in ('.cspub','.cpub'):
+    if file.split('.')[1] in ('cspub','cpub'):
         file = file.split('.')[0]+ ascii2binary_publickey(file)
         
     try:
@@ -212,8 +212,8 @@ def encrypt_decrypt():
         start()
         public_key = ''
         publickey = input('Enter Public key:')
-        if publickey.split('.')[1] == '.cpub':
-            publickey = publickey.split('.')[0]+ ascii2binary_publickey(file)
+        if publickey.split('.')[1] == 'cpub':
+            publickey = publickey.split('.')[0]+ ascii2binary_publickey(publickey)
         file = input('\nEnter file:')
 
         try:
@@ -426,9 +426,11 @@ def extract_public_key():
             public_key = content[0][3]
             
             if secretkey.endswith('.sec'):
+                check(hashlib.md5(public_key).hexdigest()+".pub")
                 connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".pub")
                 count = 1
             elif secretkey.endswith('.ssec'):
+                check(hashlib.md5(public_key).hexdigest()+".spub")
                 connect = sqlite3.connect(hashlib.md5(public_key).hexdigest()+".spub")
                 count = 2
             cursor = connect.cursor()
@@ -511,10 +513,17 @@ def sign_verify():
         start()
         public_key = ''
         publickey = input('Enter Public key:')
-        if publickey.split('.')[1] == '.cspub':
-            publickey = publickey.split('.')[0]+ ascii2binary_publickey(file)
-        file = input('\nEnter filename:')
+        if publickey.split('.')[1] == 'cspub':
+            publickey = publickey.split('.')[0]+ ascii2binary_publickey(publickey)
+        file = input('\nEnter file which has to be verified:')
+        if os.path.exists(file) == False:
+            print('File Not Found!')
+            return
+            
         sigfile = input('\nEnter Digital Signature File Location:')
+        if os.path.exists(sigfile) == False:
+            print('File Not Found!')
+            return
 
         if sigfile.endswith('.csig'):
             ascii2binary(sigfile,'Digital Signature','.csig','.qsig')
@@ -579,7 +588,7 @@ def sign_verify():
                         fail()
                         return
 
-        except FileNotFoundError:
+        except Exception as e :
             print('Public Key File Not Found!')
             fail()
             return
@@ -589,7 +598,7 @@ def sign_verify():
         start()
         secret_key = ''
         secretkey = input('Enter Private key:')
-        file = input('\nEnter file:')
+        file = input('\nEnter file which will be signed:')
         if os.path.exists(file) == False:
             print('File Not Found')
             fail()
@@ -651,8 +660,8 @@ def sign_verify():
                 os.remove(file+'.qsig')
             complete()
 
-        except FileNotFoundError:
-            print('File Not Found!')
+        except Exception as e :
+            print('Secret key File Invalid!')
             fail()
             return
 
