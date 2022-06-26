@@ -10,4 +10,4 @@ I strongly recommend to make use of so-called hybrid cryptography, in which quan
 
 I DO NOT CURRENTLY RECOMMEND RELYING ON THIS TOOL IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA. While I make a best-effort approach to avoid security bugs, this tool has not received the level of auditing and analysis that would be necessary to rely on it for high security use.
 
-Additionally please this tool to encrypt very huge files / process huge public keys / process huge digital signatures in order of Giga bytes, this program will simply load the entire file in RAM or main memory and this may cause freezing of your PC , Application crash or have unwanted side effects.
+Additionally please don't use this tool to encrypt very huge files / process huge public keys / process huge digital signatures in order of Giga bytes, this program will simply load the entire file in RAM or main memory and this may cause freezing of your PC , Application crash or have unwanted side effects.
