@@ -10,9 +10,12 @@ System Requirements
 
 A modern PC with atleast 4GB RAM and CPU having x86_64 or 64 bit support
 
-running Debian/Debian Based Linux Distro or Ubuntu / Ubuntu Based Linux or
+running one of the following supported operating systems :-
 
-Fedora Linux / Fedora based Linux Distro or Arch Linux / Arch Linux Based Distro.
+* Debian/Debian Based Linux Distro 
+* Ubuntu / Ubuntu Based Linux Distro
+* Fedora Linux / Fedora based Linux Distro 
+* Arch Linux / Arch Linux Based Distro
 
 Quick Installation
 ------------------
