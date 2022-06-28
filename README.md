@@ -1,14 +1,14 @@
 
 # PQcrypt : Post Quantum Cryptography toolkit
 
-PQcrypt is a easy to use Post Quantum Cryptography tool for Ubuntu and Debian based Linux Distributions.
+PQcrypt is a easy to use Post Quantum Cryptography tool for Linux Users.
 
 <img src="https://github.com/Anish-M-code/pqcrypt/raw/main/pqcrypt.png">
 
 Quick Installation
 ------------------
 
-To Install from this Github Repo:
+To Install from this Github Repo For Debian/Ubuntu based linux Distributions:
 
 Run the following commands in Linux terminal to install:-
 
@@ -25,6 +25,8 @@ To run the program after installation simply type :-
 ```
 sh run.sh
 ```
+For other supported operating systems refer [ Instructions](/Install.md) here
+
 Supported Algorithms : -
 --------------------
 
