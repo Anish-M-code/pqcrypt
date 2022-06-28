@@ -8,7 +8,7 @@ PQcrypt is a easy to use Post Quantum Cryptography tool for Linux Users.
 System Requirements
 --------------------
 
-A modern PC with atleast 4GB RAM and CPU having x86_64 or 64 bit support
+A modern PC with atleast 4GB RAM and CPU having x86_64 architecture or 64 bit support
 
 running one of the following supported operating systems :-
 
