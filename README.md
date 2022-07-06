@@ -44,13 +44,13 @@ Supported Algorithms : -
 
 Public-key Encryption and Key-establishment Algorithms:-
 
-1) Kyber1024
+1) Kyber1024 [ Recommended ]
 
-2) FireSaber
+2) HQC-256
 
-3) NTRU-HPS-4096-1229
+3) SIKE-p751
 
-4) NTRU-HRSS-1373
+4) SIKE-p751-compressed
 
 5) Classic-McEliece-6688128
 
@@ -66,16 +66,38 @@ Public-key Encryption and Key-establishment Algorithms:-
 
 Digital Signature Algorithms : -
 
-1) Dilithium5
+1) Dilithium5 [ Recommended ]
 
-2) Dilithium5-AES
+2) Falcon-1024
 
-3) Falcon-1024
+3) SPHINCS+-Haraka-256f-robust
+
+4) SPHINCS+-Haraka-256f-simple
+
+5) SPHINCS+-Haraka-256s-robust
+
+6) SPHINCS+-Haraka-256s-simple
+
+7) SPHINCS+-SHA256-256f-robust
+
+8) SPHINCS+-SHA256-256f-simple
+
+9) SPHINCS+-SHA256-256s-robust
+
+10) SPHINCS+-SHA256-256s-simple
+
+11) SPHINCS+-SHAKE256-256f-robust
+
+12) SPHINCS+-SHAKE256-256f-simple
+
+13) SPHINCS+-SHAKE256-256s-robust
+
+14) SPHINCS+-SHAKE256-256s-simple
 
 Features : -
 --------
 
-1) Only NIST 3rd Round Finalists Public-key Encryption & Key-establishment Algorithms and Digital Signature Algorithms are supported.
+1) Only NIST 3rd Round Public-key Encryption & Key-establishment Algorithms and Digital Signature Algorithms selected for standardization and Algorithms considered for fourth round of analysis are supported.
 
 2) All Algorithms used in this project use parameter sets which claim NIST Level 5 which provide highest security.
 
