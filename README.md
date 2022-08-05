@@ -48,21 +48,17 @@ Public-key Encryption and Key-establishment Algorithms:-
 
 2) HQC-256
 
-3) SIKE-p751
+3) Classic-McEliece-6688128
 
-4) SIKE-p751-compressed
+4) Classic-McEliece-6688128f
 
-5) Classic-McEliece-6688128
+5) Classic-McEliece-6960119
 
-6) Classic-McEliece-6688128f
+6) Classic-McEliece-6960119f
 
-7) Classic-McEliece-6960119
+7) Classic-McEliece-8192128
 
-8) Classic-McEliece-6960119f
-
-9) Classic-McEliece-8192128
-
-10) Classic-McEliece-8192128f
+8) Classic-McEliece-8192128f
 
 Digital Signature Algorithms : -
 
