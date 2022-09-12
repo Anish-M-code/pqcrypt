@@ -109,5 +109,7 @@ Limitations and Security Support
 
 For Security support and reporting bugs refer [ SECURITY](/SECURITY.md).
 
+#### PQcrypt eats data. Use it with caution. Author is not a Professional Cryptographer.
+
 THE DEVELOPER WILL NOT BE RESPONSIBLE FOR ANY DAMAGES ARISING FROM THE USE OF THIS TOOL. 
 THIS TOOL WAS DEVELOPED FOR EDUCATIONAL AND ETHICAL EXPERIMENTING PURPOSE ONLY .
