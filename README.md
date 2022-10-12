@@ -97,7 +97,7 @@ Features : -
 
 2) All Algorithms used in this project use parameter sets which claim NIST Level 5 which provide highest security.
 
-2) Uses AES256 and Argon2id Key Derviation to protect secret keys and for Hybrid Encryption of Data.
+2) Uses AES256-GCM and Argon2id Key Derviation to protect secret keys and for Hybrid Encryption of Data.
 
 Contributing to PQcrypt
 ---------------------
