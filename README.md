@@ -113,3 +113,23 @@ For Security support and reporting bugs refer [ SECURITY](/SECURITY.md).
 
 THE DEVELOPER WILL NOT BE RESPONSIBLE FOR ANY DAMAGES ARISING FROM THE USE OF THIS TOOL. 
 THIS TOOL WAS DEVELOPED FOR EDUCATIONAL AND ETHICAL EXPERIMENTING PURPOSE ONLY .
+
+References
+----------
+
+* https://soatok.blog/2021/11/17/understanding-hkdf/
+* https://github.com/open-quantum-safe/liboqs/discussions/1262
+* https://crypto.stackexchange.com/questions/101066/is-argon2-quantum-safe
+* https://crypto.stackexchange.com/questions/103918/in-a-pgp-like-application-would-compress-and-encrypt-leak-information
+* https://crypto.stackexchange.com/questions/101159/can-32-byte-shared-secret-can-be-given-as-input-to-hkdf-sha512
+* https://crypto.stackexchange.com/questions/101163/minimum-length-of-salt-and-info-for-hkdf
+* https://crypto.stackexchange.com/questions/101651/for-post-quantum-security-is-any-hmac-with-256-bit-key-secure
+* https://crypto.stackexchange.com/questions/101612/common-pitfalls-to-be-taken-care-of-while-implementing-encrypt-then-hmac-scheme
+* https://crypto.stackexchange.com/questions/101164/can-encrypt-then-mac-using-hmac-sha256-with-aes-256-gcm-protect-against-attacks
+* https://crypto.stackexchange.com/questions/101173/if-attacker-modifies-salt-used-for-hkdf-used-for-splitting-keys-for-encryption-a
+* https://crypto.stackexchange.com/questions/101118/can-raw-hash-be-used-as-secret-key
+* https://crypto.stackexchange.com/questions/101149/could-you-reuse-the-iv-for-aes256-gcm-as-salt-for-hkdf-sha256
+* https://crypto.stackexchange.com/questions/101181/to-derive-multiple-keys-from-single-shared-secret-can-i-safely-ignore-info-and-s
+
+
+

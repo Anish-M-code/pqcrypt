@@ -865,24 +865,27 @@ def main_menu():
     ch = input('\nEnter choice:')
     if ch == '1':
         encrypt_decrypt()
-        main_menu()
     elif ch == '2':
         sign_verify()
-        main_menu()
     elif ch == '3':
         fingerprint()
-        main_menu()
     elif ch == '4':
         extract_public_key()
-        main_menu()
     elif ch == '5':
         update()
-        main_menu()
     elif ch == '6':
         about()
-        main_menu()
     elif ch in ('exit','c','close'):
         sys.exit(0)
     else:
+        return
+
+while True:
+    try:
         main_menu()
-main_menu()
+    except KeyboardInterrupt:
+        print('Good bye! Exiting ...')
+        sys.exit(0)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
