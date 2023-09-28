@@ -1,6 +1,6 @@
 sudo apt update
 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml python3-pip git
-sudo apt install python3.11-venv
+sudo apt install python3-venv
 mkdir -p ~/.pqcryptvenv
 python3 -m venv ~/.pqcryptvenv
 source ~/.pqcryptvenv/bin/activate
