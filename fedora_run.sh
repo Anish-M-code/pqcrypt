@@ -1,3 +1,5 @@
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/lib64
+source ~/.pqcryptvenv/bin/activate
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64
 export PYTHONPATH=liboqs-python
 python3 pqcrypt.py
+deactivate
