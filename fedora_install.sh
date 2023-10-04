@@ -1,5 +1,4 @@
 sudo dnf install astyle cmake gcc-c++ ninja-build openssl-devel python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml python3-pip git
-sudo dnf install python3
 mkdir -p ~/.pqcryptvenv
 python3 -m venv ~/.pqcryptvenv
 source ~/.pqcryptvenv/bin/activate
