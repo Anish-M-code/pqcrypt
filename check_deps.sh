@@ -13,7 +13,6 @@ build_liboqs() {
 	ninja
 	sudo ninja install
 	cd ..
-	rm -rf liboqs
 }
 
 make_venv() {
