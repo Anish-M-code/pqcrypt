@@ -102,7 +102,7 @@ Features : -
 Contributing to PQcrypt
 ---------------------
 
-Currently i consider this as a personal project , All public contributions are welcome. Feel free to open issues if something breaks .
+Currently i consider this as a personal project , All public contributions are welcome. Feel free to open issues if something breaks . Note this project may remain without activity for long periods of time, unless it is marked archived it is active and accepts contributions.
 
 Limitations and Security Support
 ---------------------------------
