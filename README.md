@@ -20,7 +20,7 @@ running one of the following supported operating systems :-
 Quick Installation
 ------------------
 
-To Install from this Github Repo For Debian/Ubuntu based linux Distributions:
+To Install from this Github Repo :
 
 Run the following commands in Linux terminal to install:-
 
@@ -30,14 +30,13 @@ git clone https://github.com/Anish-M-code/pqcrypt.git
 Then simply type the following command to get started :- 
 
 ```
-cd pqcrypt && sh install.sh
+cd pqcrypt && sh check_deps.sh
 ```
 To run the program after installation simply type :-
 
 ```
 sh run.sh
 ```
-For other supported operating systems refer [ Instructions](/Install.md) here
 
 Supported Algorithms : -
 --------------------
