@@ -42,8 +42,6 @@ pacman_system() {
 	sudo pacman -S astyle cmake gcc ninja python-pytest python-pytest-xdist unzip libxslt doxygen graphviz python-yaml python-pip git openssl python-cryptography python-argon2_cffi
 }
 
-make_venv
-
 if has_command apt-get; then
   apt_system
 elif has_command dnf; then
@@ -53,6 +51,8 @@ elif has_command pacman; then
 else
   printf "\n\nDistribution not yet supported!\n\n"
 fi
+
+make_venv
 
 if ! [ -d /usr/local/include/oqs ]; then
 	build_liboqs
