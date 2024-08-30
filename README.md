@@ -30,12 +30,12 @@ git clone https://github.com/Anish-M-code/pqcrypt.git
 Then simply type the following command to get started :- 
 
 ```
-cd pqcrypt && sh check_deps.sh
+cd pqcrypt && source check_deps.sh
 ```
 To run the program after installation simply type :-
 
 ```
-sh run.sh
+source run.sh
 ```
 
 Supported Algorithms : -
