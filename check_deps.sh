@@ -21,8 +21,10 @@ make_venv() {
 		printf "Making Python Virtual Environment"
 		python3 -m venv ~/.pqcryptvenv
 		source ~/.pqcryptvenv/bin/activate
+                pip3 install --require-virtualenv -r requirements.txt
 	else
 		source ~/.pqcryptvenv/bin/activate
+                pip3 install --require-virtualenv -r requirements.txt
 	fi
 }
 
