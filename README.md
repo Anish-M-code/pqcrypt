@@ -3,6 +3,8 @@
 
 PQcrypt is a easy to use Post Quantum Cryptography tool for Linux users.
 
+### Note: This program is not secure enough for any use , it was developed only for learning purpose hence avoid using this. This project is no longer maintained.
+
 <img src="https://github.com/Anish-M-code/pqcrypt/raw/main/pqcrypt.png">
 
 System Requirements
