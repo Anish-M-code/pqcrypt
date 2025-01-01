@@ -1,7 +1,7 @@
 
 # PQcrypt : Post Quantum Cryptography toolkit
 
-PQcrypt is a easy to use Post Quantum Cryptography tool for Linux Users.
+PQcrypt is a easy to use Post Quantum Cryptography tool for Linux users.
 
 <img src="https://github.com/Anish-M-code/pqcrypt/raw/main/pqcrypt.png">
 
@@ -101,14 +101,14 @@ Features : -
 Contributing to PQcrypt
 ---------------------
 
-Currently i consider this as a personal project , All public contributions are welcome. Feel free to open issues if something breaks . Note this project may remain without activity for long periods of time, unless it is marked archived it is active and accepts contributions.
+Currently i consider this as a personal project , I developed it to learn about modern cryptography, All public contributions are welcome. Feel free to open issues if something breaks . Note this project may remain without activity for long periods of time, unless it is marked archived it is active and accepts contributions.
 
 Limitations and Security Support
 ---------------------------------
 
 For Security support and reporting bugs refer [ SECURITY](/SECURITY.md).
 
-#### PQcrypt eats data. Use it with caution. Author is not a Professional Cryptographer.
+#### PQcrypt eats data. Use it with caution. Author is not a Professional Cryptographer. Don't Rely on PQcrypt for any sensitive use
 
 THE DEVELOPER WILL NOT BE RESPONSIBLE FOR ANY DAMAGES ARISING FROM THE USE OF THIS TOOL. 
 THIS TOOL WAS DEVELOPED FOR EDUCATIONAL AND ETHICAL EXPERIMENTING PURPOSE ONLY .
