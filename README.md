@@ -108,7 +108,7 @@ Limitations and Security Support
 
 For Security support and reporting bugs refer [ SECURITY](/SECURITY.md).
 
-#### PQcrypt eats data. Use it with caution. Author is not a Professional Cryptographer. Don't Rely on PQcrypt for any sensitive use
+#### PQcrypt eats data. Use it with caution. Author is not a Professional Cryptographer. This tool was developed to learn about modern cryptography. Note this tool uses liboqs which is not reliable for data security.
 
 THE DEVELOPER WILL NOT BE RESPONSIBLE FOR ANY DAMAGES ARISING FROM THE USE OF THIS TOOL. 
 THIS TOOL WAS DEVELOPED FOR EDUCATIONAL AND ETHICAL EXPERIMENTING PURPOSE ONLY .
