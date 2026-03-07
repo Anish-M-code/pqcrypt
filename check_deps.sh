@@ -22,9 +22,15 @@ make_venv() {
 		python3 -m venv ~/.pqcryptvenv
 		source ~/.pqcryptvenv/bin/activate
                 pip3 install --require-virtualenv -r requirements.txt
+				git clone --depth=1 https://github.com/open-quantum-safe/liboqs-python
+				cd liboqs-python
+				pip install .
 	else
 		source ~/.pqcryptvenv/bin/activate
                 pip3 install --require-virtualenv -r requirements.txt
+				git clone --depth=1 https://github.com/open-quantum-safe/liboqs-python
+                cd liboqs-python
+                pip install .
 	fi
 }
 
