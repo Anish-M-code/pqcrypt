@@ -241,7 +241,6 @@ def update():
 
 
 def encrypt_decrypt():
-    kems = oqs.get_enabled_KEM_mechanisms()
 
     # Generate New key Pair
     def genkeypair(kemalg):
@@ -600,7 +599,6 @@ def extract_public_key():
 
 
 def sign_verify():
-    sigs = oqs.get_enabled_sig_mechanisms()
 
     # Generate New key Pair
     def genkeypair(sigalg):
@@ -894,7 +892,7 @@ def sign_verify():
 
                 ch = input("\nEnter choice:")
                 if ch == "1":
-                    genkeypair("Dilithium5")
+                    genkeypair("ML-DSA-87")
                     break
                 elif ch == "2":
                     genkeypair("Falcon-1024")
